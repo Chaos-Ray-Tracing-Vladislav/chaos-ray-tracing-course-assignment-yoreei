@@ -4,12 +4,10 @@
 #include <string>
 
 #include "CRTTypes.h"
-#include "hw3.h"
+#include "Renderer.h"
 #include "hw4.h"
 
 /// Output image resolution
-static const int imageWidth = 1920;
-static const int imageHeight = 1080;
 static const int maxColorComponent = 255;
 
 void save_ppm(Buffer2D& buf)
@@ -20,8 +18,8 @@ void save_ppm(Buffer2D& buf)
 
     for (int rowIdx = 0; rowIdx < buf.height; ++rowIdx) {
         for (int colIdx = 0; colIdx < buf.width; ++colIdx) {
-            const Pixel& pixel = buf.data[rowIdx * buf.width + colIdx];
-            ppmFileStream << (int)pixel.r << " " << (int)pixel.g << " " << (int)pixel.b << "\t";
+            const Color& Color = buf.data[rowIdx * buf.width + colIdx];
+            ppmFileStream << (int)Color.r << " " << (int)Color.g << " " << (int)Color.b << "\t";
         }
         ppmFileStream << "\n";
     }
@@ -31,12 +29,15 @@ void save_ppm(Buffer2D& buf)
 
 int main()
 {
-    // hw4
-    hw4();
+    uint16_t width = 2, height = 2;
+    Vec3 camUp = {0.f,1.f,0.f};
+    Vec3 camPos = {0.f,0.f,0.f};
+    Vec3 camDir = {0.f,0.f,-1.f};
 
-    // hw3
-    Buffer2D buf = {imageWidth, imageHeight};
-    hw3(buf);
+    Buffer2D buf = {width, height};
+    Camera cam = {width, height, 90.f, camPos, camDir, camUp};
+    Renderer renderer {cam};
+    renderer.render(buf);
     save_ppm(buf);
     return 0;
 }

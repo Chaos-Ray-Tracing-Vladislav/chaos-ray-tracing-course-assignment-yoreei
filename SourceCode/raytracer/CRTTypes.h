@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <cmath>
 
-struct Pixel
+struct Color
 {
     uint8_t r = 0;
     uint8_t g = 0;
@@ -16,14 +16,26 @@ struct Pixel
     }
 };
 
+/*
+* For holding Color data.
+*/
 struct Buffer2D
 {
     Buffer2D(uint16_t _width, uint16_t _height) : width(_width), height(_height)
     {
-        data = std::make_unique<Pixel[]>(width * height);
+        data = std::make_unique<Color[]>(width * height);
     }
 
-    std::unique_ptr<Pixel[]> data;
+    Color& operator()(uint16_t x, uint16_t y)
+    {
+        if (x >= width || y >= height)
+        {
+            throw std::out_of_range("Buffer2D::operator(): Index out of range");
+        }
+        return data[y * width + x];
+    }
+
+    std::unique_ptr<Color[]> data;
 
     const uint16_t width;
     const uint16_t height;
@@ -57,7 +69,7 @@ struct Vec3 {
         return x * other.x + y * other.y + z * other.z;
     }
 
-    Vec3 cross(const Vec3& other) const {
+    [[nodiscard]] Vec3 cross(const Vec3& other) const {
         return Vec3(
             y * other.z - z * other.y,
             z * other.x - x * other.z,
@@ -69,7 +81,7 @@ struct Vec3 {
         return std::sqrt(x * x + y * y + z * z);
     }
 
-    Vec3 normalize() const {
+    [[nodiscard]] Vec3 normalize() const {
         float len = length();
         float divCache = 1.f/len; // division optimization
         return Vec3(x * divCache, y * divCache, z * divCache);
@@ -80,6 +92,13 @@ struct Vec3 {
         return std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(z);
     }
 };
+
+float dot(const Vec3& a, const Vec3& b) {
+    return a.dot(b);
+}
+Vec3 cross(const Vec3& a, const Vec3& b) {
+    return a.cross(b);
+}
 
 /*
 * Linear Algebra Square Matrix in R^3
@@ -185,6 +204,15 @@ private:
     float data[9];
 };
 
+struct Ray {
+    Vec3 origin;
+    Vec3 direction;
+
+    Ray() : origin(Vec3()), direction(Vec3()) {}
+
+    Ray(const Vec3& origin, const Vec3& direction) : origin(origin), direction(direction) {}
+};
+
 // hw4 Task 1
 class Triangle {
 public:
@@ -195,15 +223,15 @@ public:
     Triangle(const Vec3& v0, const Vec3& v1, const Vec3& v2) : v0(v0), v1(v1), v2(v2) {}
 
     Vec3 normal() const {
-        Vec3 edge1 = v1 - v0;
-        Vec3 edge2 = v2 - v0;
-        return edge1.cross(edge2).normalize();
+        Vec3 e1 = v1 - v0;
+        Vec3 e2 = v2 - v0;
+        return e1.cross(e2).normalize();
     }
 
     float area() const {
-        Vec3 edge1 = v1 - v0;
-        Vec3 edge2 = v2 - v0;
-        return edge1.cross(edge2).length() * 0.5f;
+        Vec3 e1 = v1 - v0;
+        Vec3 e2 = v2 - v0;
+        return e1.cross(e2).length() * 0.5f;
     }
 
     Triangle transform(const Matrix3x3& mat) const {
@@ -215,5 +243,77 @@ public:
 
     std::string toString() const {
         return "Triangle: {" + v0.toString() + ", " + v1.toString() + ", " + v2.toString() + "}";
+    }
+
+    /*
+    * Input: ray, rayProj
+    * Input: rayProj: projection of ray.direction onto camera direction
+    * Output: t: distance from ray.origin to the intersection point
+    * Output: p: intersection point
+    * return: true if the ray intersects the triangle
+    */
+    bool intersect(const Ray& ray, float& t, Vec3& p) const {
+        // Here assuming counter-clockwise order
+        Vec3 e0 = v1 - v0;
+        Vec3 e1 = v2 - v0;
+        Vec3 tri_normal = cross(e0, e1).normalize();
+
+        float rayProj = dot(ray.direction, tri_normal);
+
+        // if triangle is facing the ray, compute ray-plane intersection
+        if (rayProj < -1e-6) {
+            float rpDist = dot(tri_normal, ray.origin - v0);
+            t = rpDist / rayProj;
+            p = ray.origin + ray.direction * t;
+
+            // check if `p` is inside triangle
+            Vec3 c0 = cross(e0, p - v0);
+            Vec3 c1 = cross(v2 - v1, p - v1);
+            Vec3 c2 = cross(v0 - v2, p - v2);
+
+            return dot(tri_normal, c0) > 1e-6 &&
+                   dot(tri_normal, c1) > 1e-6 &&
+                   dot(tri_normal, c2) > 1e-6;
+        }
+        return false;
+    }
+
+    bool intersect_plane(const Ray& ray, float& t, Vec3& p) const {
+        // Here assuming counter-clockwise order
+        Vec3 e0 = v1 - v0;
+        Vec3 e1 = v2 - v0;
+        Vec3 tri_normal = cross(e0, e1).normalize();
+
+        float rayProj = dot(ray.direction, tri_normal);
+
+        // if triangle is facing the ray, compute ray-plane intersection
+        if (rayProj < -1e-6) {
+            float rpDist = dot(tri_normal, v0 - ray.origin); // was this the problem?
+            t = rpDist / rayProj;
+            p = ray.origin + ray.direction * t;
+            return true;
+        }
+        return false;
+    }
+
+    bool intersect_plane2(const Ray& ray, float& t, Vec3& p) const
+    {
+        Vec3 e0 = v1 - v0;
+        Vec3 e1 = v2 - v0;
+        Vec3 n = cross(e0, e1).normalize();
+        Vec3 p0 = v0;
+        Vec3 l0 = ray.origin;
+        Vec3 l = ray.direction;
+
+        // Assuming vectors are all normalized
+        float denom = dot(n, l);
+        if (denom < -1e-6) {
+            Vec3 p0l0 = p0 - l0;
+            t = dot(p0l0, n) / denom; 
+            p = l0 + l * t;
+            return (t >= 0);
+        }
+
+        return false;
     }
 };
