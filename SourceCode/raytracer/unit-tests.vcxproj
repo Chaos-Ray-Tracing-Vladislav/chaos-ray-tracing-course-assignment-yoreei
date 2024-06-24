@@ -21,10 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e17ca847-fa88-49fd-bcbe-2bf40acb3873}</ProjectGuid>
-    <RootNamespace>chaoshw3</RootNamespace>
+    <ProjectGuid>{891751d8-c87c-4005-8a3f-50022b582658}</ProjectGuid>
+    <RootNamespace>unittests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>raytracer</ProjectName>
+    <ProjectName>tests</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -105,6 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\oddnecessity\git\my\chaos-ray-tracing-course-assignment-yoreei\SourceCode\raytracer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -129,27 +130,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Animation.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MeshObject.h" />
-    <ClCompile Include="stb_image_write.cpp" />
+    <ClCompile Include="MainUnitTests.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.h" />
-    <ClInclude Include="Animator.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="CRTTypes.h" />
-    <ClInclude Include="Image.h" />
-    <ClInclude Include="Intersection.h" />
-    <ClInclude Include="json.hpp" />
-    <ClInclude Include="perlin-noise.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="RendererMetrics.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneObject.h" />
-    <ClInclude Include="Settings.h" />
-    <ClInclude Include="stb_image_write.h" />
-    <ClInclude Include="Triangle.h" />
+    <ClInclude Include="..\raytracer\UnitTestData.h" />
+    <ClInclude Include="CameraUnitTests.h" />
+    <ClInclude Include="CRTTypesUnitTests.h" />
+    <ClInclude Include="RendererIntegrationTests.h" />
+    <ClInclude Include="TriangleUnitTests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
