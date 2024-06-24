@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{891751d8-c87c-4005-8a3f-50022b582658}</ProjectGuid>
-    <RootNamespace>unittests</RootNamespace>
+    <ProjectGuid>{97589811-19c4-41e7-be5a-2039f28d8f36}</ProjectGuid>
+    <RootNamespace>mainwinconsole</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>tests</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -105,9 +104,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\oddnecessity\git\my\chaos-ray-tracing-course-assignment-yoreei\SourceCode\raytracer;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -133,14 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MainUnitTests.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\raytracer\UnitTestData.h" />
-    <ClInclude Include="CameraUnitTests.h" />
-    <ClInclude Include="CRTTypesUnitTests.h" />
-    <ClInclude Include="RendererIntegrationTests.h" />
-    <ClInclude Include="TriangleUnitTests.h" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
