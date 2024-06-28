@@ -18,8 +18,8 @@ public:
     void renderScene(const Scene& scene, Image& image)
     {
         metrics.startTimer();
-        for (int y = 0; y < image.height; ++y) {
-            for (int x = 0; x < image.width; ++x) {
+        for (int y = 0; y < image.getHeight(); ++y) {
+            for (int x = 0; x < image.getWidth(); ++x) {
                 Ray ray = scene.camera.generateRay(image, x, y);
                 image(x, y) = traceScene(scene, ray);
                 //traceImagePlane(ray) // to debug camera
@@ -42,10 +42,11 @@ private:
 
     Color traceScene(const Scene& scene, const Ray& ray)
     {
+        auto& vs = scene.vertices;
         Triangle::IntersectionData xData, xDataBest;
         bool bSuccess = false;
         for (const Triangle& tri : scene.triangles) {
-            Intersection x = tri.intersect(ray, xData); // TODO: Separate plane intersection & triangle uv intersection tests for perf.
+            Intersection x = tri.intersect(vs, ray, xData); // TODO: Separate plane intersection & triangle uv intersection tests for perf.
             if ( xData.t < xDataBest.t && x == Intersection::SUCCESS) {
                 xDataBest = xData;
                 bSuccess = true;
@@ -54,7 +55,7 @@ private:
             metrics.record(toString(x));
         }
 
-        return bSuccess ? shade_abs(xDataBest) : scene.bgColor;
+        return bSuccess ? shade_normal(xDataBest) : scene.bgColor;
     }
 
     /* hw3. For debugging camera Ray generation */
@@ -81,6 +82,14 @@ private:
         uint8_t r = static_cast<uint8_t>(fabs(xData.p.x * 100.f));
         uint8_t g = static_cast<uint8_t>(fabs(xData.p.y * 100.f));
         uint8_t b = static_cast<uint8_t>(fabs(xData.p.z * 100.f));
+
+        return Color{ r, g, b };
+    }
+
+    Color shade_normal(const Triangle::IntersectionData& xData) const {
+        uint8_t r = static_cast<uint8_t>(fabs(xData.n.x + 1.f) * 127.5f);
+        uint8_t g = static_cast<uint8_t>(fabs(xData.n.y + 1.f) * 127.5f);
+        uint8_t b = static_cast<uint8_t>(fabs(xData.n.z + 1.f) * 127.5f);
 
         return Color{ r, g, b };
     }
