@@ -1,0 +1,17 @@
+{
+    "scene_name": "scene0",
+    "timers": {
+        "RENDER_PROCESS_QUEUE": 19.7148129,
+        "generateAccelerationStructure": 0.0002346,
+        "RENDER_GENERATE_QUEUE": 0.2217308,
+        "RENDER_ALL": 20.1358147,
+        "RENDER_FLATTEN": 0.056719
+    },
+    "counters": null
+}
+
+Error: { 0.000000 0.000000 0.000000 }
+Max Error: { 0.000000 0.000000 0.000000 }
+Max Error Direction: { 0.000000 0.000000 0.000000 }
+
+
