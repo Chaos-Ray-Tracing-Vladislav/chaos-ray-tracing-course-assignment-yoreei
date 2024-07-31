@@ -8,7 +8,7 @@ void Scripts::onSceneLoaded(Scene& scene) {
     // set start frame
     GFrameNumber = 0;
 
-    fps = 60; // Frames per second
+    fps = 30; // Frames per second
     duration = 7.0f; // Duration of the animation in seconds
     endFrame = fps * duration;
     GEndFrame = uint64_t(endFrame);

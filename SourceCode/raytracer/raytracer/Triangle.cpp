@@ -100,12 +100,16 @@ void Triangle::intersect(const Scene& scene, const Ray& ray, size_t triRef, Trac
 * Quick line-triangle intersect that returns only a bool. Used for occlusion testing.
 * @return: true also for backside
 */
-bool Triangle::boolIntersect(const Scene& scene, const Vec3& start, const Vec3& end) const
+bool Triangle::boolIntersect(const Scene& scene, size_t triRef, const Vec3& start, const Vec3& end) const
 {
     const Vec3& v0 = scene.vertices[v[0]];
     const Vec3& v1 = scene.vertices[v[1]];
     const Vec3& v2 = scene.vertices[v[2]];
 
+    // first prune:
+    if (!scene.triangleAABBs[triRef].hasIntersection(Ray{start, (start - end).getUnit()})) return false;
+
+    // more computationally intensive check:
     if (signOfVolume(start, v0, v1, v2) != signOfVolume(end, v0, v1, v2)) {
         bool pyr3 = signOfVolume(start, end, v0, v1);
         if (pyr3 == signOfVolume(start, end, v1, v2) && pyr3 == signOfVolume(start, end, v2, v0)) {

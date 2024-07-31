@@ -17,18 +17,21 @@
 * @param end: location vector
 * Determine best intersection of ray with scene.
 */
+
+
 bool Scene::isOccluded(const Vec3& start, const Vec3& end) const {
     // todo remove Vec3 occlusionLine = end - start;
     // todo remove float maxDistanceSq = occlusionLine.lengthSquared();
     // todo remove Ray ray = { start, occlusionLine.getUnit() };
-    for (const Triangle& tri : triangles) {
+    for(size_t triRef = 0; triRef < triangles.size(); ++triRef) {
+        const Triangle& tri = triangles[triRef];
         TraceHit hit{}; // todo move up
         auto& material = materials[tri.materialIndex];
         if (!material.occludes) {
             continue;
         }
 
-        if (tri.boolIntersect(*this, start, end)) {
+        if (tri.boolIntersect(*this, triRef, start, end)) {
             return true;
         }
         else {

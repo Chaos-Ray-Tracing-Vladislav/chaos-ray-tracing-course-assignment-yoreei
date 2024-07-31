@@ -124,7 +124,7 @@ void Engine::writeFrame() const {
     std::string logStr = stream.str();
     std::cout << logStr;
 
-    bool writeLogFile = false; // todo move to settings
+    bool writeLogFile = true; // todo move to settings
     if (writeLogFile) {
         fileStream << logStr;
     }

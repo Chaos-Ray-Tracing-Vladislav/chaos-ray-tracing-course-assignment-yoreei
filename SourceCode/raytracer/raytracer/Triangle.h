@@ -35,7 +35,7 @@ public:
 
     void intersect(const Scene& scene, const Ray& ray, size_t triRef, TraceHit& hit) const;
 
-    bool boolIntersect(const Scene& scene, const Vec3& start, const Vec3& end) const;
+    bool boolIntersect(const Scene& scene, size_t triRef, const Vec3& start, const Vec3& end) const;
 
     void computeHit(const Scene& scene, const Ray& ray, float rProj, TraceHit& hit) const;
 
