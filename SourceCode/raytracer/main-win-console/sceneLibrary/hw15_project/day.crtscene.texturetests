@@ -1,6 +1,6 @@
 {
 	"settings": {
-		"skybox": "night_01",
+		"skybox": "day_1",
 		"background_color": [
 			0, 0.5, 0
 		],		
@@ -21,69 +21,88 @@
 		]
 	},
 	
-	"lights": [
+	"lights": [	
 		{
-			"intensity": 650,
-			"position": [
-				9, 9, 0
+			"type": "sun",
+			"intensity": 1.7,
+			"color": [0.79, 0.77, 0.6],
+			"direction": [
+				-1, -1, 1
 			]
-		},
-		{
-			"intensity": 300,
-			"position": [
-				15, 1, -0.3
-			],
-			"color": [1, 0.5, 0.1]
-		},	
-		{
-			"intensity": 800,
-			"position": [
-				-9, 16, 0
-			]
-		},
-		{
-			"intensity": 350,
-			"position": [
-				2, 9, 7.5
-			]
-		},		
-		{
-			"intensity": 1000,
-			"position": [
-				-15, 5, 2
-			],
-			"color": [0.8, 0.8, 0.4]
-		},
-		{
-			"intensity": 1000,
-			"position": [
-				10, -4, 10
-			],
-			"color": [0.8, 0.4, 0.8]
-		},
-		{
-			"intensity": 1000,
-			"position": [
-				-8, -4.8, -9
-			],
-			"color": [0.4, 0.8, 0.8]
 		}
-				
+	],
+
+	"textures":[
+		{
+			"name": "rocks1",
+			"type": "bitmap",
+			"file_path": "/textures/clean_pebbles_diff_1k.jpg"
+		},
+		{
+			"name": "rocks2",
+			"type": "bitmap",
+			"file_path": "/textures/forest_ground_04_diff_1k.jpg"
+		},
+		{
+			"name": "rocks3",
+			"type": "bitmap",
+			"file_path": "/textures/gray_rocks_diff.jpg"
+		},
+		{
+			"name": "rocks4",
+			"type": "bitmap",
+			"file_path": "/textures/rock_wall_06_diff_1k.jpg"
+		},
+		{
+			"name": "rocks5",
+			"type": "bitmap",
+			"file_path": "/textures/stone_tiles_02_diff_1k.jpg"
+		},
+		{
+			"name": "simple1",
+			"type": "bitmap",
+			"file_path": "/textures/aerial_beach_01_diff_1k.jpg"
+		},
+		{
+			"name": "simple2",
+			"type": "bitmap",
+			"file_path": "/textures/hangar_concrete_floor_diff_1k.jpg"
+		},
+		{
+			"name": "simple3",
+			"type": "bitmap",
+			"file_path": "/textures/macro_flour_diff_1k.jpg"
+		},
+		{
+			"name": "simple4",
+			"type": "bitmap",
+			"file_path": "/textures/painted_plaster_wall_diff_1k.jpg"
+		},
+		{
+			"name": "simple5",
+			"type": "bitmap",
+			"file_path": "/textures/polystyrene_diff_1k.jpg"
+		},
+		{
+			"name": "solidRock",
+			"type": "bitmap",
+			"file_path": "/textures/concrete_wall_003_diff_2k.jpg"
+		}
 	],
 	
 	"materials": [{
-			"type": "reflective",
-			"albedo": [
-				0.8, 0.8, 0.8
-			],
-			"smooth_shading": false
+			"type": "diffuse",
+			"albedo": "solidRock",
+			"smooth_shading": true
 		},
 		{
-			"type": "diffuse",
+			"type": "refractive",
 			"albedo": [
-				0.9, 0.9, 0.9
+				0.9, 0.6, 0.9
 			],
-			"smooth_shading": true
+			"ior": 1.3,
+			"smooth_shading": false,
+			"occludes": true
 		}			
 	],
 	
@@ -96,6 +115,12 @@
 				-15, -5, -15,
 				15, -5, -15
 			],
+			"uvs": [
+				0, 1, 0,
+				1, 1, 0,
+				0, 0, 0,
+				1, 0, 0
+			],		
 			
 			"triangles": [
 				0, 1, 2,
