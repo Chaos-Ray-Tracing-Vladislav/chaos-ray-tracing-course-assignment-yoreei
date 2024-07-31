@@ -70,7 +70,6 @@ void Scripts::onTick(Scene& scene) {
         float endCamHeight = -4.f;
 
         float t = GFrameNumber / endFrame; // Normalized time [0, 1]
-        t = applyEasing(t); // slow down at start and end
 
         float angle = startAngle * (1.f -t) + endAngle * t;
         float radius = startRadius * (1.f - t) + endRadius * t;
@@ -92,7 +91,6 @@ void Scripts::onTick(Scene& scene) {
         float endCamHeight = -4.f;
 
         float t = GFrameNumber / endFrame; // Normalized time [0, 1]
-        t = applyEasing(t); // slow down at start and end
 
         float angle = startAngle * (1.f -t) + endAngle * t;
         float radius = startRadius * (1.f - t) + endRadius * t;
@@ -106,11 +104,6 @@ void Scripts::onTick(Scene& scene) {
 
 
     if (scene.fileName == "night") {
-        fps = 1; // Frames per second
-        duration = 5.0f; // Duration of the animation in seconds
-        endFrame = fps * duration;
-        GEndFrame = uint64_t(endFrame);
-
         // Parameters for the circular path
         float startFov = 30.f; // (degrees)
         float endFov = 90.f; // (degrees)
@@ -123,7 +116,6 @@ void Scripts::onTick(Scene& scene) {
         float endCamHeight = 8.f;
 
         float t = GFrameNumber / endFrame; // Normalized time [0, 1]
-        t = applyEasing(t); // slow down at start and end
 
         float angle = startAngle * (1.f -t) + endAngle * t;
         float radius = startRadius * (1.f - t) + endRadius * t;
@@ -139,10 +131,6 @@ void Scripts::onTick(Scene& scene) {
     }
 
     if (scene.fileName == "night2") {
-        fps = 1; // Frames per second
-        duration = 8.0f; // Duration of the animation in seconds
-        endFrame = fps * duration;
-        GEndFrame = uint64_t(endFrame);
 
         // Parameters for the circular path
         float startFov = 30.f; // (degrees)
@@ -163,7 +151,6 @@ void Scripts::onTick(Scene& scene) {
         float t = GFrameNumber / endFrame; // Normalized time [0, 1]
         float lightT = GFrameNumber / lightEndFrame;
         lightT = std::clamp(lightT, 0.f, 1.f);
-        t = applyEasing(t); // slow down at start and end
 
         float angle = startAngle * (1.f -t) + endAngle * t;
         float radius = startRadius * (1.f - t) + endRadius * t;

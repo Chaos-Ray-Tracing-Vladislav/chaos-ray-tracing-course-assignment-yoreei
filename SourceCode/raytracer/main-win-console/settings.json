@@ -1,7 +1,7 @@
 {
     "sceneLibraryDir": "sceneLibrary",
     "projectDir": "hw15_project",
-    "targetScenes": ["day.crtscene", "day2.crtscene", "night.crtscene", "night2.crtscene"],
+    "targetScenes": ["night.crtscene", "night2.crtscene"],
     "outputDir": "out",
     
     "maxDepth": 6,
